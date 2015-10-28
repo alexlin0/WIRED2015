@@ -22,48 +22,49 @@ int last_speed_button_state ;
 int forward_drive ;
 int last_forward_drive_btn_state ;
 
-void init_drive_parameters()
+void init_drive_parameters() //sets the speed of the motor
 {
-    speed_divisor = 1 ;
-    last_speed_button_state = 0 ;
-    forward_drive = 1 ;
-    last_forward_drive_btn_state = 0 ;
+    speed_divisor = 1 ; //sets the speed of the motor to high
+    last_speed_button_state = 0 ; //sets the initial button states to 0
+    forward_drive = 1 ; // checks to see if robot is moving forward
+    last_forward_drive_btn_state = 0 ; //sets the initial forward drive button state to 0
 }
 
-void change_drive_direction()
+void change_drive_direction() //reverses the controls
 {
-    int current_forward_drive_btn_state = vexRT[Btn7D] ;
-    if ( current_forward_drive_btn_state == 1 && last_forward_drive_btn_state == 0 )
+    int current_forward_drive_btn_state = vexRT[Btn7D] ; // sets button for the forward drive button state
+    if ( current_forward_drive_btn_state == 1 && last_forward_drive_btn_state == 0 ) // if statement checking if button is down
     {
-        if(forward_drive == 0)
+        if(forward_drive == 0) // checking to see if forward drive is in use
         {
-            forward_drive = 1 ;
+            forward_drive = 1 ; //sets the forward drive to 1 switches controls
         }
         else
         {
-            forward_drive = 0 ;
+            forward_drive = 0 ; //sets the forward drive to 0 doesn't switch controls
         }
     }
-    last_forward_drive_btn_state = current_forward_drive_btn_state ;
+    last_forward_drive_btn_state = current_forward_drive_btn_state ; // sets the last button state to the current one
 }
 
-void change_speed(){
+void change_speed() //changes the motor speed
+{
     int current_speed_button_state ;
-#if ( _TARGET == "VirtWorld" )
+#if ( _TARGET == "VirtWorld" ) //virtual world
     current_speed_button_state = joy1Pov(Pov0) ;
 #else
     current_speed_button_state = vexRT[Btn7U] ;
 #endif
-    if( last_speed_button_state == 0 && current_speed_button_state == 1)
+    if( last_speed_button_state == 0 && current_speed_button_state == 1) // if statement for setting the speed
     {
-        if (speed_divisor == 3 )
+        if (speed_divisor == 3 ) //changes speed of motor to slow
         {
-          speed_divisor = 1;
+          speed_divisor = 1; // changes  speed of motor to fast
         } else {
-          speed_divisor = 3;
+          speed_divisor = 3; // changes speed of motor to slow
         }
     }
-    last_speed_button_state = current_speed_button_state ;
+    last_speed_button_state = current_speed_button_state ; // sets last speed button to current speed button
 }
 
 void drive() {                  // Code for driving the robot
